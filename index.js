@@ -1,5 +1,12 @@
-require('dotenv').config(); // Load .env file
-require('dotenv').config({ path: '.env.local' }); // Load .env.local and overwrite values in .env
+// Load environment variables correctly based on environment
+const dotenv = require('dotenv');
+const ENVIRONMENT = process.env.NODE_ENV || 'local';
+
+if (ENVIRONMENT === 'production') {
+  dotenv.config({ path: '.env.production' });
+} else {
+  dotenv.config({ path: '.env.local' });
+}
 
 const express = require("express");
 const cors = require("cors");
@@ -18,53 +25,67 @@ const corsOptions = {
     credentials: true, // Allow cookies and authorization headers
     methods: ["GET", "POST", "PUT", "DELETE"], // Allow necessary methods
     allowedHeaders: ["Content-Type", "Authorization"], // Allow necessary headers
-  };
-  app.use(cors(corsOptions));
-  
+};
+app.use(cors(corsOptions));
+
 app.use(express.json()); // Parse JSON request bodies
 
-// Middleware to Verify Firebase Token
-const verifyToken = async (req, res, next) => {
-  const token = req.headers.authorization?.split(" ")[1]; // Extract Bearer token
-
-  if (!token) {
-    return res.status(401).json({ error: "Unauthorized: No token provided" });
-  }
-
-  try {
-    const decodedToken = await admin.auth().verifyIdToken(token); // Verify token with Firebase
-    req.user = decodedToken; // Attach user data to request
-    next();
-  } catch (error) {
-    console.error("Token verification failed:", error);
-    return res.status(401).json({ error: "Unauthorized: Invalid token" });
-  }
-};
-
-// Public Route (No Authentication Needed)
-app.get("/api/public", (req, res) => {
-  res.json({ message: "Public API works!" });
+// Default Route (Fix for 404)
+app.get("/", (req, res) => {
+  res.send("Backend API is running!");
 });
 
-// Protected Route (Requires Authentication)
-app.get("/api/protected", verifyToken, (req, res) => {
-  res.json({ message: "Secure data", user: req.user });
-});
+// Updated `/api/courses` Route
+const courses = [
+  {
+    id: 1,
+    description: `APPSC Group - II COMPUTER PROFICIENCY TEST (CPT) 2025
+                  Highlights:
+                  Based on Syllabus and Standard of the exam
+                  Complete coverage of the syllabus
+                  Classroom/Live/Recorded Classes
+                  Medium: Bilingual
+                  Mode: Offline/Online
+                  Total No. of Classes – 10
+                  Total No. of Model test – 10
+                  Live Assignments & Doubts Clarification Sessions
+                  Practice Book
+                  Admissions in Progress 
+                  Batch Starts from 12th March 2025`,
+    name: "UPSC Course",
+    duration: "6 months",
+    thumbnail: "https://placehold.co/600x337",
+    videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    originalPrice: 4999,
+    discountedPrice: 3999,
+    expiryDate: "2025-12-31",
+    status: "active"
+  },
+  {
+    id: 2,
+    name: "TGPSC Course",
+    duration: "4 months",
+    thumbnail: "https://placehold.co/600x337",
+    videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    originalPrice: 3999,
+    discountedPrice: 2999,
+    expiryDate: "2025-11-30",
+  },
+  {
+    id: 3,
+    name: "APPSC Course",
+    duration: "5 months",
+    thumbnail: "https://placehold.co/600x337",
+    videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    originalPrice: 4599,
+    discountedPrice: 3499,
+    expiryDate: "2025-10-15",
+  },
+];
 
-// Example route: Fetch all courses
 app.get('/api/courses', (req, res) => {
-  const courses = [
-    { id: 1, name: "UPSC Preparation" },
-    { id: 2, name: "TGPSC Preparation" },
-    { id: 3, name: "APPSC Preparation" },
-    { id: 4, name: "SSC Preparation" },
-    { id: 5, name: "IAS Preparation" },
-    { id: 6, name: "IPS Preparation" }
-  ];
-
   res.json(courses);
 });
-
 // Start Server
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
