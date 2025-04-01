@@ -5,7 +5,6 @@ import express from "express";
 import cors from "cors";
 import admin from "firebase-admin";
 import coursesRouter from "./routes/courses.js"; // ✅ Import router
-import courseRouter from "./routes/course.js"
 
 // Initialize Firebase Admin SDK
 admin.initializeApp({
@@ -46,7 +45,6 @@ const verifyToken = async (req, res, next) => {
 
 // Use the courses router
 app.use("/api", coursesRouter);
-app.use("/api", courseRouter);
 
 app.get("/", (req, res) => {
   res.send("Backend API is running!");
