@@ -4,7 +4,7 @@ import moment from "moment"; // Install using: npm install moment
 
 const router = express.Router();
 
-router.get("/", async (req, res) => {
+router.get("/courses", async (req, res) => {
   try {
     const [rows] = await pool.query("SELECT * FROM courses");
 
