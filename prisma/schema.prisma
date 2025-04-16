@@ -7,18 +7,42 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  STUDENT
+  ADMIN
+  COURSE_CREATOR
+  CONTENT_DEVELOPER
+  CONTENT_UPLOADER
+  CONTENT_REVIEWER
+  CONTENT_RESOLVER
+}
+
+model User {
+  id             String   @id @default(cuid())
+  name           String
+  email          String   @unique
+  password       String
+  mobile         String   @unique
+  profilePicture String?
+  role           Role     @default(STUDENT)
+  isVerified     Boolean  @default(false)
+  status         String   @default("ACTIVE")
+  lastLogin      DateTime?
+  createdAt      DateTime @default(now())
+}
+
 model Course {
-  id              Int      @id @default(autoincrement())
+  id              String   @id @default(cuid())
   name            String
-  description     String?
+  description     String   @db.Text
   thumbnail       String?
   videoUrl        String?
   originalPrice   Float
-  discountedPrice Float?
-  startDate       DateTime?
-  endDate         DateTime?
+  discountedPrice Float
+  startDate       DateTime @db.Date     // Date only
+  endDate         DateTime @db.Date     // Date only
   duration        String?
+  status          String   @default("active")
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 }
-
