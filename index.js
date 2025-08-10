@@ -36,8 +36,6 @@ import roleRoutes from "./routes/roles/roleRoutes.ts";
 import freeMaterialRoutes from "./routes/freeMaterial/freeMaterialRoutes.ts";
 import testAttemptRoutes from "./routes/tests/attemptRoutes.ts";
 import courseInstallmentRoutes from "./routes/courses/courseInstallmentRoutes.ts";
-import paymentRoutes from "./routes/payments/RazorpayPaymentsRoutes.ts";
-import webhookRoutes from "./routes/webHooks/razorpayWebhookRoutes.ts";
 import enrollmentRoutes from "./routes/courses/courseEnrollmentRoutes.ts";
 import reportRoutes from "./routes/tests/reports/reportRoutes.ts";
 import mPaymentRoutes from "./routes/courses/courseAccessRoutes.ts";
@@ -91,9 +89,7 @@ app.use("/api/user-permissions", userPermissionRoutes);
 app.use("/api/free-material", freeMaterialRoutes);
 app.use("/api/test", testAttemptRoutes);
 app.use("/api/installments", courseInstallmentRoutes);
-app.use("/api/payments", paymentRoutes);
 app.use("/api/m-payments", mPaymentRoutes);
-app.use("/api/webhook", webhookRoutes);
 app.use("/api/enrollments", enrollmentRoutes);
 app.use("/api/reports", reportRoutes);
 
