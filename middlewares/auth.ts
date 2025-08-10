@@ -1,4 +1,4 @@
-// middlewares/auth.js
+// middlewares/auth.ts
 import { verifyToken } from "../utils/jwt.js";
 
 export const authenticate = (req, res, next) => {
@@ -12,6 +12,8 @@ export const authenticate = (req, res, next) => {
 
   try {
     const decoded = verifyToken(token);
+    // console.log("🔐 Decoded token:", decoded);
+
     req.user = decoded; // contains { id, role }
     next();
   } catch (error) {

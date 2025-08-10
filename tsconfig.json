@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "ES2021",
+    "module": "CommonJS",
+    "esModuleInterop": true,
+    "strict": true,
+    "typeRoots": ["./types", "./node_modules/@types"],
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "outDir": "dist",
+    "baseUrl": "."
+  },
+  "include": ["src", "types"]
+}
